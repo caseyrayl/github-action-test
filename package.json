@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "ncc build index.js --license licenses.txt",
+    "build-hello": "ncc build ./actions/hello-action/index.js --license licenses.txt --out ./actions/hello-action/dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
