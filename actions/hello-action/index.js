@@ -8,16 +8,20 @@ try {
   console.log(`Hello ${nameToGreet}!`);
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
+
   // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+  // const payload = JSON.stringify(github.context.payload, undefined, 2);  
+  // console.log(`The event payload: ${payload}`);
+
   // test writes to env and masking
+  const processCommand = `echo "TEST_WRITE=github_file" >> $GITHUB_ENV`;
+  execSync(processCommand, { stdio: "inherit" });
+
   core.exportVariable('TEST_VISIBLE', 'unhidden');
   core.exportVariable('TEST_HIDDEN', 'hidden');
   core.setSecret('hidden');
 
-  const processCommand = `echo "TEST_WRITE=github_file" >> $GITHUB_ENV`;
-  execSync(processCommand, { stdio: "inherit" });
+  console.log(`Complete`);
 } catch (error) {
   core.setFailed(error.message);
 }
