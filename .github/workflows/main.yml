@@ -19,4 +19,4 @@ jobs:
         run: echo "The time was ${{ steps.hello.outputs.time }}"      
       # Test ENV writes
       - name: Test environment variables
-        run: echo ${{ env.TEST_VISIBLE }}
+        run: echo ${{ env.TEST_VISIBLE }} ${{ env.TEST_WRITE }}
