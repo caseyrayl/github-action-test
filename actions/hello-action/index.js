@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const execSync = require("child_process").execSync;
 
 try {
   // `who-to-greet` input defined in action metadata file
@@ -14,6 +15,9 @@ try {
   core.exportVariable('TEST_VISIBLE', 'unhidden');
   core.exportVariable('TEST_HIDDEN', 'hidden');
   core.setSecret('hidden');
+
+  const processCommand = `echo "TEST_WRITE=github_file" >> $GITHUB_ENV`;
+  execSync(processCommand, { stdio: "inherit" });
 } catch (error) {
   core.setFailed(error.message);
 }
