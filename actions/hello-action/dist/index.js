@@ -3570,7 +3570,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var deprecation = __nccwpck_require__(481);
+var deprecation = __nccwpck_require__(932);
 var once = _interopDefault(__nccwpck_require__(223));
 
 const logOnceCode = once(deprecation => console.warn(deprecation));
@@ -4004,7 +4004,7 @@ function removeHook(state, name, method) {
 
 /***/ }),
 
-/***/ 481:
+/***/ 932:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -6146,6 +6146,14 @@ module.exports = require("assert");
 
 /***/ }),
 
+/***/ 129:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
+
+/***/ }),
+
 /***/ 614:
 /***/ ((module) => {
 
@@ -6285,6 +6293,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(186);
 const github = __nccwpck_require__(438);
+const execSync = __nccwpck_require__(129).execSync;
 
 try {
   // `who-to-greet` input defined in action metadata file
@@ -6292,9 +6301,20 @@ try {
   console.log(`Hello ${nameToGreet}!`);
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
+
   // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+  // const payload = JSON.stringify(github.context.payload, undefined, 2);  
+  // console.log(`The event payload: ${payload}`);
+
+  // test writes to env and masking
+  const processCommand = `echo "TEST_WRITE=github_file" >> $GITHUB_ENV`;
+  execSync(processCommand, { stdio: "inherit" });
+
+  core.exportVariable('TEST_VISIBLE', 'unhidden');
+  core.exportVariable('TEST_HIDDEN', 'hidden');
+  core.setSecret('hidden');
+
+  console.log(`Complete`);
 } catch (error) {
   core.setFailed(error.message);
 }
