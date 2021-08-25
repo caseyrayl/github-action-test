@@ -9,14 +9,21 @@ jobs:
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v2
+
+      # Write version from release into ENV
+      - name: Setup VERSION Variable
+        run: echo "VERSION=v1.0" >> $GITHUB_ENV
+
       - name: Hello world action step
         uses: ./actions/hello-action # Uses an action in the root directory
         id: hello
         with:
           who-to-greet: 'Mona the Octocat'
+
       # Use the output from the `hello` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.time }}"      
+
       # Test ENV writes
       - name: Test environment variables
         run: echo ${{ env.TEST_VISIBLE }} ${{ env.TEST_WRITE }}
